@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Registered Players</title>
+
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+
+        <!-- HEADER -->
+        <header class="dashboard-header">
+
+            <div>
+                <h1>Registered Players</h1>
+
+                <p th:text="${match.matchName}">
+                    Match Name
+                </p>
+            </div>
+
+            <a href="/admin/matches" class="back-btn">
+                ← Back to Matches
+            </a>
+
+        </header>
+
+
+        <!-- SUCCESS MESSAGE -->
+        <div th:if="${success}" style="margin:15px 0; padding:12px; border-radius:8px;">
+            <strong th:text="${success}">
+                Success
+            </strong>
+        </div>
+
+
+        <!-- ERROR MESSAGE -->
+        <div th:if="${error}" style="margin:15px 0; padding:12px; border-radius:8px;">
+            <strong th:text="${error}">
+                Error
+            </strong>
+        </div>
+
+
+        <!-- MATCH SUMMARY -->
+        <section class="match-details-card">
+
+            <h2>Match Information</h2>
+
+            <div class="match-info">
+
+                <div class="info-item">
+                    <span>Match Name</span>
+                    <strong th:text="${match.matchName}">
+                        Match Name
+                    </strong>
+                </div>
+
+                <div class="info-item">
+                    <span>Date</span>
+                    <strong th:text="${match.matchDate}">
+                        Date
+                    </strong>
+                </div>
+
+                <div class="info-item">
+                    <span>Start Time</span>
+                    <strong th:text="${match.startTime}">
+                        Time
+                    </strong>
+                </div>
+
+                <div class="info-item">
+                    <span>Total Slots</span>
+                    <strong th:text="${match.totalSlots}">
+                        0
+                    </strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- REGISTRATION COUNT -->
+        <section class="match-details-card">
+
+            <h2>
+                Registered Players:
+                <span th:text="${#lists.size(registrations)}">
+                    0
+                </span>
+            </h2>
+
+
+            <!-- NO REGISTRATION -->
+            <div th:if="${#lists.isEmpty(registrations)}">
+
+                <p>
+                    No players have registered for this match yet.
+                </p>
+
+            </div>
+
+
+            <!-- REGISTRATION TABLE -->
+            <div th:unless="${#lists.isEmpty(registrations)}" style="overflow-x:auto;">
+
+                <table style="width:100%; border-collapse:collapse;">
+
+                    <thead>
+
+                        <tr>
+
+                            <th style="padding:12px; text-align:left;">
+                                Slot
+                            </th>
+
+                            <th style="padding:12px; text-align:left;">
+                                Registration ID
+                            </th>
+
+                            <th style="padding:12px; text-align:left;">
+                                FF UID
+                            </th>
+
+                            <th style="padding:12px; text-align:left;">
+                                FF Username
+                            </th>
+
+                            <th style="padding:12px; text-align:left;">
+                                Registered At
+                            </th>
+
+                            <th style="padding:12px; text-align:left;">
+                                Winner
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr th:each="registration : ${registrations}">
+
+                            <td style="padding:12px;" th:text="${registration.slotNumber}">
+                                1
+                            </td>
+
+                            <td style="padding:12px;" th:text="${registration.id}">
+                                1
+                            </td>
+
+                            <td style="padding:12px;" th:text="${registration.user.ffUid}">
+                                123456789
+                            </td>
+
+                            <td style="padding:12px;" th:text="${registration.user.ffUsername}">
+                                PlayerName
+                            </td>
+
+                            <td style="padding:12px;" th:text="${registration.registeredAt}">
+                                2026-09-02 20:00
+                            </td>
+
+                            <!-- WINNER -->
+                            <td style="padding:12px;">
+
+                                <form th:action="@{/admin/matches/{id}/declare-winner(id=${match.id})}" method="post">
+
+                                    <input type="hidden" name="registrationId" th:value="${registration.id}">
+
+                                    <button type="submit" style="padding:8px 14px; cursor:pointer;"
+                                        onclick="return confirm('Declare this player as the winner?');">
+
+                                        🏆 Declare Winner
+
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</body>
+
+</html>

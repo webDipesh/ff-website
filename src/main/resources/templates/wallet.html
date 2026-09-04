@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Website - Wallet</title>
+    <link rel="stylesheet" href="/css/wallet.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="logo">FF Website</div>
+
+        <nav>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
+
+
+    <main class="wallet-container">
+
+        <h1>My Wallet</h1>
+        <p class="subtitle">Manage your FF coins</p>
+
+
+        <!-- Success Message -->
+        <div class="success-message" th:if="${withdrawSuccess}" th:text="${withdrawSuccess}">
+        </div>
+
+
+        <!-- Error Message -->
+        <div class="error-message" th:if="${withdrawError}" th:text="${withdrawError}">
+        </div>
+
+
+        <!-- Balance -->
+        <section class="balance-card">
+
+            <h2>🪙 Total Coins</h2>
+
+            <div class="coin-number" th:text="${coins}">
+                0
+            </div>
+
+            <p>Your current coin balance</p>
+
+        </section>
+
+
+        <!-- Conversion Rate -->
+        <section class="rate-card">
+
+            <h2>💵 Coin Conversion Rate</h2>
+
+            <p class="rate">
+
+                <strong>100 Coins</strong>
+                =
+                <strong th:text="'Rs. ' + ${100.0 / coinsPerRupee}">
+                    Rs. 10
+                </strong>
+
+            </p>
+
+            <p class="rate-info">
+
+                Current value of your coins:
+
+                <strong th:text="'Rs. ' + ${rupeeValue}">
+                    Rs. 0
+                </strong>
+
+            </p>
+
+        </section>
+
+
+        <!-- Wallet Options -->
+        <section class="wallet-options">
+
+
+            <!-- WITHDRAW -->
+            <div class="wallet-card">
+
+                <h2>⬇️ Withdraw</h2>
+
+                <p>
+                    Withdraw your coins through eSewa or Khalti.
+                </p>
+
+                <p class="minimum">
+
+                    Minimum withdrawal:
+
+                    <strong th:text="${minimumWithdrawalCoins} + ' Coins'">
+                        100 Coins
+                    </strong>
+
+                </p>
+
+
+                <form action="/wallet/withdraw" method="post" class="withdraw-form">
+
+
+                    <!-- Coins -->
+                    <label for="coins">
+                        Coins to Withdraw
+                    </label>
+
+                    <input type="number" id="coins" name="coins" th:min="${minimumWithdrawalCoins}" th:max="${coins}"
+                        placeholder="Enter coins" required>
+
+
+                    <!-- Method -->
+                    <label for="method">
+                        Payment Method
+                    </label>
+
+                    <select id="method" name="method" required>
+
+                        <option value="">
+                            Select Payment Method
+                        </option>
+
+                        <option value="ESEWA">
+                            eSewa
+                        </option>
+
+                        <option value="KHALTI">
+                            Khalti
+                        </option>
+
+                    </select>
+
+
+                    <!-- Wallet Identifier -->
+                    <label for="walletIdentifier">
+                        eSewa / Khalti Wallet Number
+                    </label>
+
+                    <input type="text" id="walletIdentifier" name="walletIdentifier" maxlength="100"
+                        placeholder="Enter your wallet number" required>
+
+
+                    <button type="submit" class="withdraw-btn">
+
+                        Withdraw Coins
+
+                    </button>
+
+                </form>
+
+
+                <p class="notice">
+
+                    💡 After submitting the request, your coins
+                    will be deducted immediately.
+
+                </p>
+
+                <p class="notice">
+
+                    Payment should be done within
+                    <strong>12 hours</strong>.
+
+                </p>
+
+            </div>
+
+
+            <!-- ADD COINS -->
+            <div class="wallet-card">
+
+                <h2>➕ Add Coins</h2>
+
+                <p>
+                    Add coins to your wallet using eSewa or Khalti.
+                </p>
+
+                <div class="methods">
+
+                    <button type="button" class="method-btn">
+                        eSewa
+                    </button>
+
+                    <button type="button" class="method-btn">
+                        Khalti
+                    </button>
+
+                </div>
+
+                <p class="notice">
+
+                    Payment verification will be handled securely.
+
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+        <a href="/dashboard" class="back-btn">
+
+            ← Back to Dashboard
+
+        </a>
+
+    </main>
+
+</body>
+
+</html>

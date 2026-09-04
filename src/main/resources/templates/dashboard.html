@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FF Website - Dashboard</title>
+
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <div class="logo">
+            FF Website
+        </div>
+
+        <nav>
+            <a href="/dashboard">Dashboard</a>
+
+            <a href="/notifications">
+                🔔 Notifications
+                <span th:if="${notificationCount > 0}" th:text="${notificationCount}">
+                    0
+                </span>
+            </a>
+
+            <a href="/logout">Logout</a>
+        </nav>
+
+    </header>
+
+
+    <main class="dashboard-container">
+
+        <h1>Welcome to Free Fire Earning Space 🔥</h1>
+
+        <p class="subtitle">
+            Start earning coins today! Skill matters, and so does your dedication. Join matches, win coins, and become a
+            Free Fire champion!
+        </p>
+
+
+        <!-- ========================= -->
+        <!-- PROFILE & WALLET SECTION -->
+        <!-- ========================= -->
+
+        <section class="cards">
+
+            <div class="card">
+
+                <h2>Profile</h2>
+
+                <p>
+                    View and manage your profile.
+                </p>
+
+                <a href="/profile" class="profile-btn">
+                    View Profile
+                </a>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- COINS SECTION -->
+            <!-- ========================= -->
+
+            <div class="card coin-card">
+
+                <h2>🪙 Total Coins</h2>
+
+                <p class="coin-balance">
+                    <span th:text="${user.coins}">0</span> Coins
+                </p>
+
+                <a href="/wallet" class="profile-btn">
+                    Open Wallet
+                </a>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- FREE MATCHES -->
+            <!-- ========================= -->
+
+            <div class="card">
+
+                <h2>Free Matches</h2>
+
+                <p>
+                    Join upcoming free matches.
+                </p>
+
+                <a href="/free-matches" class="profile-btn">
+                    View Free Matches
+                </a>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- PAID MATCHES -->
+            <!-- ========================= -->
+
+            <div class="card">
+
+                <h2>Paid Matches</h2>
+
+                <p>
+                    Join paid matches and win prizes.
+                </p>
+
+                <a href="/paid-matches" class="profile-btn">
+                    View Paid Matches
+                </a>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- TEAMS -->
+            <!-- ========================= -->
+
+            <div class="card">
+
+                <h2>Teams</h2>
+
+                <p>
+                    Explore Free Fire teams and players.
+                </p>
+
+                <button type="button">
+                    View Teams
+                </button>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- ADMIN PANEL -->
+            <!-- ADMIN ONLY -->
+            <!-- ========================= -->
+
+            <div class="card admin-card" th:if="${user.role == 'ADMIN'}">
+
+                <h2>⚙️ Admin Panel</h2>
+
+                <p>
+                    Manage website and withdrawal requests.
+                </p>
+
+                <a href="/admin/withdrawals" class="profile-btn">
+                    Manage Withdrawals
+                </a>
+
+            </div>
+
+            <div th:if="${user.role == 'ADMIN'}">
+                <a href="/admin/matches" class="admin-btn">
+                    🎮 Manage Matches
+                </a>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

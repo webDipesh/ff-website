@@ -1,0 +1,137 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+
+    /* Free Fire background */
+    background-image: url("/images/login-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    color: #ffffff;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+}
+
+/* Dark overlay so login card is clearly visible */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 0;
+}
+
+.login-container {
+    width: 100%;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+
+    padding: 30px;
+
+    /* Slight transparency */
+    background: rgba(30, 41, 59, 0.90);
+
+    border-radius: 16px;
+
+    /* Glass effect */
+    backdrop-filter: blur(6px);
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+
+    border: 1px solid #475569;
+    border-radius: 8px;
+
+    background: rgba(15, 23, 42, 0.9);
+    color: white;
+
+    outline: none;
+}
+
+input:focus {
+    border-color: #38bdf8;
+}
+
+button,
+.google-btn {
+    display: block;
+    width: 100%;
+
+    margin-top: 20px;
+    padding: 13px;
+
+    border: 0;
+    border-radius: 8px;
+
+    text-align: center;
+    text-decoration: none;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button {
+    background: #f59e0b;
+    color: #111827;
+}
+
+.google-btn {
+    background: white;
+    color: #111827;
+}
+
+.divider {
+    text-align: center;
+    margin: 22px 0;
+    color: #94a3b8;
+}
+
+.register {
+    text-align: center;
+    margin-top: 20px;
+    color: #94a3b8;
+}
+
+.register a {
+    color: #38bdf8;
+    text-decoration: none;
+}

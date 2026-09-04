@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile - FF Website</title>
+
+    <link rel="stylesheet" href="/css/profile.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <div class="logo">
+            FF Website
+        </div>
+
+        <nav>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Logout</a>
+        </nav>
+
+    </header>
+
+
+    <main class="profile-container">
+
+        <div class="profile-card">
+
+            <h1>My Profile</h1>
+
+            <p class="subtitle">
+                Manage your Free Fire profile information.
+            </p>
+
+
+            <!-- Account ID -->
+
+            <div class="info-group">
+
+                <label>Account ID</label>
+
+                <input type="text" th:value="${user.id}" readonly>
+
+            </div>
+
+
+            <!-- Email -->
+
+            <div class="info-group">
+
+                <label>Email</label>
+
+                <input type="email" th:value="${user.email}" readonly>
+
+            </div>
+
+
+            <form action="/profile" method="post" id="profileForm">
+
+
+                <!-- FF UID -->
+
+                <div class="info-group">
+
+                    <label for="ffUid">
+                        Free Fire UID
+                    </label>
+
+                    <input type="text" id="ffUid" name="ffUid" th:value="${user.ffUid}"
+                        placeholder="Enter your Free Fire UID"
+                        th:readonly="${user.ffUid != null and !user.ffUid.isEmpty()}" required>
+
+                </div>
+
+
+                <!-- FF Username -->
+
+                <div class="info-group">
+
+                    <label for="ffUsername">
+                        Free Fire Username
+                    </label>
+
+                    <input type="text" id="ffUsername" name="ffUsername" th:value="${user.ffUsername}"
+                        placeholder="Enter your Free Fire username"
+                        th:readonly="${user.ffUsername != null and !user.ffUsername.isEmpty()}" required>
+
+                </div>
+
+
+                <!-- First time Save -->
+
+                <button type="submit" id="saveButton"
+                    th:if="${user.ffUid == null or user.ffUid.isEmpty() or user.ffUsername == null or user.ffUsername.isEmpty()}">
+
+                    Save Profile
+
+                </button>
+
+
+            </form>
+
+
+            <!-- Edit button -->
+
+            <button type="button" id="editButton" class="edit-button"
+                th:if="${user.ffUid != null and !user.ffUid.isEmpty() and user.ffUsername != null and !user.ffUsername.isEmpty()}">
+
+                Edit Profile
+
+            </button>
+
+
+            <!-- Success -->
+
+            <p class="success-message" th:if="${success}" th:text="${success}">
+            </p>
+
+
+            <a class="back-link" href="/dashboard">
+
+                ← Back to Dashboard
+
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        const editButton = document.getElementById("editButton");
+
+        const saveButton = document.getElementById("saveButton");
+
+        const ffUid = document.getElementById("ffUid");
+
+        const ffUsername = document.getElementById("ffUsername");
+
+
+        if (editButton) {
+
+            editButton.addEventListener("click", function () {
+
+                ffUid.removeAttribute("readonly");
+
+                ffUsername.removeAttribute("readonly");
+
+                editButton.style.display = "none";
+
+                if (saveButton) {
+                    saveButton.style.display = "block";
+                }
+
+            });
+
+        }
+
+    </script>
+
+</body>
+
+</html>

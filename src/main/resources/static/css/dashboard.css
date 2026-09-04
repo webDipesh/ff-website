@@ -1,0 +1,129 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff, #ffff00, #ff00ff, #00ffff);
+    animation: rgb 5s linear infinite;
+    filter: brightness(1.2);
+    color: #222;
+}
+
+.navbar {
+    height: 65px;
+    background: #0cd337;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 40px;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: brown;
+}
+
+.navbar nav {
+    display: flex;
+    gap: 25px;
+}
+
+.navbar a {
+    color: brown;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+.dashboard-container {
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.dashboard-container h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba, -2px -2px 4px rgba, 0 0 10px rgba;
+}
+
+.subtitle {
+    color: black;
+    font-weight: bold;
+    text-brightness: 1.2;
+    margin-bottom: 35px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.card h2 {
+    margin-bottom: 12px;
+}
+
+.card p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.card button {
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+
+    background: #111827;
+    color: white;
+}
+
+.card button:hover {
+    opacity: 0.85;
+}
+
+@media (max-width: 768px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .navbar {
+        padding: 0 20px;
+    }
+}
+
+.profile-btn {
+    display: inline-block;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+
+    background: #111827;
+    color: white;
+    text-decoration: none;
+}
+
+.profile-btn:hover {
+    opacity: 0.85;
+}

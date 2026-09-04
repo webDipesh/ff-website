@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin - Withdrawals</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+        }
+
+        .message {
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .error {
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-x: auto;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #222;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f8f8f8;
+        }
+
+        .action-form {
+            margin-bottom: 8px;
+        }
+
+        .note-input {
+            width: 180px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+
+        button {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .approve-btn {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .reject-btn {
+            background: #c62828;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Withdrawal Requests</h1>
+
+
+        <!-- Success Message -->
+        <div class="message" th:if="${success}" th:text="${success}">
+        </div>
+
+
+        <!-- Error Message -->
+        <div class="error" th:if="${error}" th:text="${error}">
+        </div>
+
+
+        <div class="table-container">
+
+            <!-- No pending withdrawals -->
+            <div class="empty" th:if="${withdrawals.isEmpty()}">
+
+                No pending withdrawal requests.
+
+            </div>
+
+
+            <!-- Withdrawal Table -->
+            <table th:if="${!withdrawals.isEmpty()}">
+
+                <thead>
+
+                    <tr>
+                        <th>ID</th>
+                        <th>User Email</th>
+                        <th>Coins</th>
+                        <th>Amount</th>
+                        <th>Method</th>
+                        <th>Wallet</th>
+                        <th>Requested At</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr th:each="withdrawal : ${withdrawals}">
+
+                        <!-- ID -->
+                        <td th:text="${withdrawal.id}">
+                            1
+                        </td>
+
+
+                        <!-- User Email -->
+                        <td th:text="${withdrawal.user.email}">
+                            user@example.com
+                        </td>
+
+
+                        <!-- Coins -->
+                        <td th:text="${withdrawal.coins}">
+                            100
+                        </td>
+
+
+                        <!-- Amount -->
+                        <td>
+                            Rs.
+                            <span th:text="${withdrawal.amount}">
+                                10.00
+                            </span>
+                        </td>
+
+
+                        <!-- Method -->
+                        <td th:text="${withdrawal.method}">
+                            ESEWA
+                        </td>
+
+
+                        <!-- Wallet -->
+                        <td th:text="${withdrawal.walletIdentifier}">
+                            98XXXXXXXX
+                        </td>
+
+
+                        <!-- Requested At -->
+                        <td th:text="${withdrawal.requestedAt}">
+                            2026-09-01
+                        </td>
+
+
+                        <!-- Actions -->
+                        <td>
+
+                            <!-- APPROVE -->
+                            <form class="action-form" th:action="@{/admin/withdrawals/approve}" method="post">
+
+                                <input type="hidden" name="id" th:value="${withdrawal.id}">
+
+                                <input class="note-input" type="text" name="adminNote" placeholder="Admin note">
+
+                                <button type="submit" class="approve-btn">
+
+                                    Approve
+
+                                </button>
+
+                            </form>
+
+
+                            <!-- REJECT -->
+                            <form class="action-form" th:action="@{/admin/withdrawals/reject}" method="post">
+
+                                <input type="hidden" name="id" th:value="${withdrawal.id}">
+
+                                <input class="note-input" type="text" name="adminNote" placeholder="Reason">
+
+                                <button type="submit" class="reject-btn">
+
+                                    Reject
+
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

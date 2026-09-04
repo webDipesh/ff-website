@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${match.id == null ? 'Create Match - FF Website' : 'Edit Match - FF Website'}">
+        Create Match - FF Website
+    </title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 160px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #111827;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 6px;
+            background: #111827;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        .success {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            background: #dcfce7;
+            color: #166534;
+            font-weight: bold;
+        }
+
+        .error {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            background: #fee2e2;
+            color: #991b1b;
+            font-weight: bold;
+        }
+
+        .paid-fields {
+            display: none;
+        }
+
+        .back {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .info {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            background: #eef2ff;
+            color: #3730a3;
+            font-size: 14px;
+        }
+
+        .edit-info {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            background: #fff7ed;
+            color: #9a3412;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- PAGE TITLE -->
+        <h1 th:text="${match.id == null ? 'Create New Match' : 'Edit Match'}">
+            Create New Match
+        </h1>
+
+
+        <!-- CREATE INFO -->
+        <div class="info" th:if="${match.id == null}">
+            Match will be saved as <strong>DRAFT</strong>.
+            You can publish it from the admin match management page.
+        </div>
+
+
+        <!-- EDIT INFO -->
+        <div class="edit-info" th:if="${match.id != null}">
+            You are editing an existing match.
+            You can update match details, including Room ID and Room Password.
+        </div>
+
+
+        <!-- SUCCESS MESSAGE -->
+        <div class="success" th:if="${success}" th:text="${success}">
+        </div>
+
+
+        <!-- ERROR MESSAGE -->
+        <div class="error" th:if="${error}" th:text="${error}">
+        </div>
+
+
+        <!-- FORM -->
+        <form th:action="${match.id == null
+                ? '/admin/matches'
+                : '/admin/matches/' + match.id + '/update'}" method="post">
+
+
+            <!-- MATCH NAME -->
+            <div class="group">
+
+                <label for="matchName">
+                    Match Name
+                </label>
+
+                <input type="text" id="matchName" name="matchName" placeholder="Enter match name"
+                    th:value="${match.matchName}" required>
+
+            </div>
+
+
+            <!-- MATCH DATE -->
+            <div class="group">
+
+                <label for="matchDate">
+                    Match Date
+                </label>
+
+                <input type="date" id="matchDate" name="matchDate" th:value="${match.matchDate}" required>
+
+            </div>
+
+
+            <!-- START TIME -->
+            <div class="group">
+
+                <label for="startTime">
+                    Start Time
+                </label>
+
+                <input type="time" id="startTime" name="startTime" th:value="${match.startTime}" required>
+
+            </div>
+
+
+            <!-- PRIZE REQUIREMENT -->
+            <div class="group">
+
+                <label for="prizeRequirement">
+                    Prize Requirement
+                </label>
+
+                <textarea id="prizeRequirement" name="prizeRequirement" placeholder="Example: Survive until Top 10"
+                    required th:text="${match.prizeRequirement}"></textarea>
+
+            </div>
+
+
+            <!-- MATCH TYPE -->
+            <div class="group">
+
+                <label for="matchType">
+                    Match Type
+                </label>
+
+                <select id="matchType" name="matchType" required>
+
+                    <option value="">
+                        Select Match Type
+                    </option>
+
+                    <option value="FREE" th:selected="${match.matchType == 'FREE'}">
+                        FREE
+                    </option>
+
+                    <option value="PAID" th:selected="${match.matchType == 'PAID'}">
+                        PAID
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- GAME MODE -->
+            <div class="group">
+
+                <label for="gameMode">
+                    Game Mode
+                </label>
+
+                <select id="gameMode" name="gameMode" required>
+
+                    <option value="">
+                        Select Game Mode
+                    </option>
+
+                    <option value="SOLO" th:selected="${match.gameMode == 'SOLO'}">
+                        SOLO
+                    </option>
+
+                    <option value="DUO" th:selected="${match.gameMode == 'DUO'}">
+                        DUO
+                    </option>
+
+                    <option value="SQUAD" th:selected="${match.gameMode == 'SQUAD'}">
+                        SQUAD
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- MAP -->
+            <div class="group">
+
+                <label for="map">
+                    Map
+                </label>
+
+                <select id="map" name="map" required>
+
+                    <option value="">
+                        Select Map
+                    </option>
+
+                    <option value="Bermuda" th:selected="${match.map == 'Bermuda'}">
+                        Bermuda
+                    </option>
+
+                    <option value="Purgatory" th:selected="${match.map == 'Purgatory'}">
+                        Purgatory
+                    </option>
+
+                    <option value="Alpine" th:selected="${match.map == 'Alpine'}">
+                        Alpine
+                    </option>
+
+                    <option value="NexTerra" th:selected="${match.map == 'NexTerra'}">
+                        NexTerra
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- TOTAL SLOTS -->
+            <div class="group">
+
+                <label for="totalSlots">
+                    Total Slots
+                </label>
+
+                <input type="number" id="totalSlots" name="totalSlots" min="1" placeholder="Example: 48"
+                    th:value="${match.totalSlots}" required>
+
+            </div>
+
+
+            <!-- ENTRY COINS -->
+            <div class="group paid-fields" id="paidFields">
+
+                <label for="entryCoins">
+                    Entry Coins
+                </label>
+
+                <input type="number" id="entryCoins" name="entryCoins" min="0" th:value="${match.entryCoins}"
+                    placeholder="Example: 50">
+
+            </div>
+
+
+            <!-- PRIZE COINS -->
+            <div class="group">
+
+                <label for="prizeCoins">
+                    Prize Coins
+                </label>
+
+                <input type="number" id="prizeCoins" name="prizeCoins" min="0" th:value="${match.prizeCoins}"
+                    placeholder="Example: 1000" required>
+
+            </div>
+
+
+            <!-- ROOM ID -->
+            <div class="group">
+
+                <label for="roomId">
+                    Room ID
+                </label>
+
+                <input type="text" id="roomId" name="roomId" placeholder="Enter room ID" th:value="${match.roomId}">
+
+            </div>
+
+
+            <!-- ROOM PASSWORD -->
+            <div class="group">
+
+                <label for="roomPassword">
+                    Room Password
+                </label>
+
+                <input type="text" id="roomPassword" name="roomPassword" placeholder="Enter room password"
+                    th:value="${match.roomPassword}">
+
+            </div>
+
+
+            <!-- MATCH RULES -->
+            <div class="group">
+
+                <label for="matchRules">
+                    Match Rules
+                </label>
+
+                <textarea id="matchRules" name="matchRules" placeholder="Enter match rules..." required
+                    th:text="${match.matchRules}"></textarea>
+
+            </div>
+
+
+            <!-- SUBMIT BUTTON -->
+            <button type="submit" th:text="${match.id == null
+                        ? 'Save Match as Draft'
+                        : 'Update Match'}">
+
+                Save Match as Draft
+
+            </button>
+
+        </form>
+
+
+        <!-- BACK -->
+        <a href="/admin/matches" class="back">
+
+            ← Back to Manage Matches
+
+        </a>
+
+    </div>
+
+
+    <script>
+
+        const matchType =
+            document.getElementById("matchType");
+
+        const paidFields =
+            document.getElementById("paidFields");
+
+        const entryCoins =
+            document.getElementById("entryCoins");
+
+
+        function updatePaidFields() {
+
+            if (matchType.value === "PAID") {
+
+                paidFields.style.display = "block";
+
+                entryCoins.required = true;
+
+            } else {
+
+                paidFields.style.display = "none";
+
+                entryCoins.required = false;
+
+                entryCoins.value = 0;
+            }
+        }
+
+
+        matchType.addEventListener(
+            "change",
+            updatePaidFields
+        );
+
+
+        /*
+         * Run once when page loads.
+         *
+         * This is important for Edit mode because
+         * PAID match should immediately show Entry Coins.
+         */
+        updatePaidFields();
+
+    </script>
+
+</body>
+
+</html>

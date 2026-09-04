@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${match.matchName} + ' - Match Details'">
+        Match Details
+    </title>
+
+    <link rel="stylesheet" href="/css/dashboard.css">
+
+    <style>
+        .match-details-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .match-details-card {
+            background: #fff;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .match-details-card h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-item span {
+            font-weight: bold;
+        }
+
+        .room-info {
+            background: #ecfdf5;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .room-warning {
+            background: #fff7ed;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        /* SUCCESS MESSAGE */
+        .success-message {
+            background: #dcfce7;
+            color: #166534;
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            border: 1px solid #bbf7d0;
+        }
+
+        /* ERROR MESSAGE */
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            border: 1px solid #fecaca;
+        }
+
+        .register-btn,
+        .registered-btn {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            text-align: center;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .register-btn {
+            background: #111827;
+            color: white;
+        }
+
+        .register-btn:hover {
+            background: #1f2937;
+        }
+
+        .registered-btn {
+            background: #dcfce7;
+            color: #166534;
+            cursor: default;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="match-details-container">
+
+        <!-- SUCCESS MESSAGE -->
+        <div th:if="${success}" class="success-message" th:text="${success}">
+            Registration successful!
+        </div>
+
+        <!-- ERROR MESSAGE -->
+        <div th:if="${error}" class="error-message" th:text="${error}">
+            Error message
+        </div>
+
+
+        <!-- MATCH INFORMATION -->
+        <section class="match-details-card">
+
+            <h1 th:text="${match.matchName}">
+                Match Name
+            </h1>
+
+            <div class="info-item">
+                <span>Date</span>
+                <strong th:text="${match.matchDate}">
+                    Date
+                </strong>
+            </div>
+
+            <div class="info-item">
+                <span>Start Time</span>
+                <strong th:text="${match.startTime}">
+                    Start Time
+                </strong>
+            </div>
+
+            <div class="info-item">
+                <span>Match Type</span>
+                <strong th:text="${match.matchType}">
+                    FREE
+                </strong>
+            </div>
+
+            <div class="info-item">
+                <span>Game Mode</span>
+                <strong th:text="${match.gameMode}">
+                    SOLO
+                </strong>
+            </div>
+
+            <div class="info-item">
+                <span>Map</span>
+                <strong th:text="${match.map}">
+                    Bermuda
+                </strong>
+            </div>
+
+            <div class="info-item">
+                <span>Total Slots</span>
+                <strong th:text="${match.totalSlots}">
+                    48
+                </strong>
+            </div>
+
+            <div class="info-item">
+                <span>Prize Coins</span>
+                <strong th:text="${match.prizeCoins}">
+                    1000
+                </strong>
+            </div>
+
+            <div class="info-item" th:if="${match.matchType == 'PAID'}">
+
+                <span>Entry Coins</span>
+
+                <strong th:text="${match.entryCoins}">
+                    50
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- PRIZE REQUIREMENT -->
+        <section class="match-details-card">
+
+            <h2>Prize Requirement</h2>
+
+            <p th:text="${match.prizeRequirement}">
+                Prize requirement
+            </p>
+
+        </section>
+
+
+        <!-- MATCH RULES -->
+        <section class="match-details-card">
+
+            <h2>Match Rules</h2>
+
+            <p th:text="${match.matchRules}">
+                Match rules
+            </p>
+
+        </section>
+
+
+        <!-- REGISTRATION -->
+        <section class="match-details-card">
+
+            <h2>Registration</h2>
+
+            <!-- ALREADY REGISTERED -->
+            <div th:if="${registered}">
+
+                <button class="registered-btn" type="button">
+
+                    ✓ You are already registered
+
+                </button>
+
+            </div>
+
+
+            <!-- NOT REGISTERED -->
+            <div th:unless="${registered}">
+
+                <form th:action="@{'/matches/' + ${match.id} + '/register'}" method="post">
+
+                    <button class="register-btn" type="submit">
+
+                        Register for Match
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- ROOM INFORMATION -->
+        <section class="match-details-card">
+
+            <h2>Room Information</h2>
+
+
+            <!-- ROOM AVAILABLE -->
+            <div th:if="${roomVisible}" class="room-info">
+
+                <div class="info-item">
+
+                    <span>Room ID</span>
+
+                    <strong th:text="${match.roomId}">
+                        Room ID
+                    </strong>
+
+                </div>
+
+                <div class="info-item">
+
+                    <span>Room Password</span>
+
+                    <strong th:text="${match.roomPassword}">
+                        Room Password
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- ROOM NOT AVAILABLE -->
+            <div th:unless="${roomVisible}" class="room-warning">
+
+                <p>
+                    🔒 Room ID and Room Password will be
+                    available only 4 minutes before the
+                    match starts.
+                </p>
+
+                <!-- USER NOT REGISTERED -->
+                <p th:if="${!registered}">
+
+                    You must register for this match to
+                    view the room information.
+
+                </p>
+
+                <!-- USER REGISTERED -->
+                <p th:if="${registered}">
+
+                    Room information is not available yet.
+                    This page will automatically refresh.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- BACK TO DASHBOARD -->
+        <a href="/dashboard" class="back-btn">
+
+            ← Back to Dashboard
+
+        </a>
+
+    </div>
+
+
+    <!--
+        AUTOMATIC REFRESH
+
+        Server-side roomVisible is recalculated
+        whenever this page loads.
+
+        While room is hidden,
+        reload the page every 30 seconds.
+    -->
+
+    <script th:if="${!roomVisible}">
+
+        setTimeout(function () {
+
+            window.location.reload();
+
+        }, 30000);
+
+    </script>
+
+</body>
+
+</html>

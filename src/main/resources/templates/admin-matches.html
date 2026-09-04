@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Matches</title>
+
+    <link rel="stylesheet" href="/css/dashboard.css">
+
+    <style>
+        .matches-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+
+        /* PAGE HEADER */
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+
+        .page-title {
+            margin: 0;
+        }
+
+
+        .create-btn {
+            display: inline-block;
+            padding: 11px 18px;
+            background: #111827;
+            color: white;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+
+        .create-btn:hover {
+            opacity: 0.9;
+        }
+
+
+        /* MESSAGES */
+
+        .message {
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+
+        .success-message {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+
+        /* MATCH CARD */
+
+        .match-card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+
+        .match-card h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+
+        /* MATCH INFORMATION */
+
+        .match-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+
+        .info-item {
+            padding: 10px;
+            background: #f9fafb;
+            border-radius: 7px;
+        }
+
+
+        .info-item strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+
+        /* STATUS */
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+
+        .status-draft {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+
+        .status-published {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+
+        /* ACTIONS */
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+
+        .action-btn {
+            display: inline-block;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 7px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+
+        .edit-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+
+        .publish-btn {
+            background: #16a34a;
+            color: white;
+        }
+
+
+        .registration-btn {
+            background: #7c3aed;
+            color: white;
+        }
+
+
+        .delete-btn {
+            background: #dc2626;
+            color: white;
+        }
+
+
+        /* BACK BUTTON */
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .page-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .create-btn {
+                text-align: center;
+            }
+
+            .match-info {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                text-align: center;
+                width: 100%;
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="matches-container">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <h1 class="page-title">
+                Manage Matches
+            </h1>
+
+            <!-- CREATE MATCH BUTTON -->
+
+            <a href="/admin/matches/new" class="create-btn">
+                + Create Match
+            </a>
+
+        </div>
+
+
+        <!-- SUCCESS MESSAGE -->
+
+        <div th:if="${success}" class="message success-message" th:text="${success}">
+
+            Match deleted successfully!
+
+        </div>
+
+
+        <!-- ERROR MESSAGE -->
+
+        <div th:if="${error}" class="message error-message" th:text="${error}">
+
+            Error
+
+        </div>
+
+
+        <!-- NO MATCHES -->
+
+        <div th:if="${#lists.isEmpty(matches)}" class="match-card">
+
+            <p>
+                No matches available.
+            </p>
+
+        </div>
+
+
+        <!-- ALL MATCHES -->
+
+        <div th:each="match : ${matches}" class="match-card">
+
+
+            <!-- MATCH NAME -->
+
+            <h2 th:text="${match.matchName}">
+                Match Name
+            </h2>
+
+
+            <!-- MATCH INFORMATION -->
+
+            <div class="match-info">
+
+
+                <!-- DATE -->
+
+                <div class="info-item">
+
+                    <strong>
+                        Date
+                    </strong>
+
+                    <span th:text="${match.matchDate}">
+                        Date
+                    </span>
+
+                </div>
+
+
+                <!-- START TIME -->
+
+                <div class="info-item">
+
+                    <strong>
+                        Start Time
+                    </strong>
+
+                    <span th:text="${match.startTime}">
+                        Time
+                    </span>
+
+                </div>
+
+
+                <!-- TYPE -->
+
+                <div class="info-item">
+
+                    <strong>
+                        Match Type
+                    </strong>
+
+                    <span th:text="${match.matchType}">
+                        FREE
+                    </span>
+
+                </div>
+
+
+                <!-- GAME MODE -->
+
+                <div class="info-item">
+
+                    <strong>
+                        Game Mode
+                    </strong>
+
+                    <span th:text="${match.gameMode}">
+                        SOLO
+                    </span>
+
+                </div>
+
+
+                <!-- MAP -->
+
+                <div class="info-item">
+
+                    <strong>
+                        Map
+                    </strong>
+
+                    <span th:text="${match.map}">
+                        Bermuda
+                    </span>
+
+                </div>
+
+
+                <!-- SLOTS -->
+
+                <div class="info-item">
+
+                    <strong>
+                        Total Slots
+                    </strong>
+
+                    <span th:text="${match.totalSlots}">
+                        48
+                    </span>
+
+                </div>
+
+
+                <!-- PRIZE -->
+
+                <div class="info-item">
+
+                    <strong>
+                        Prize Coins
+                    </strong>
+
+                    <span th:text="${match.prizeCoins}">
+                        1000
+                    </span>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="info-item">
+
+                    <strong>
+                        Status
+                    </strong>
+
+
+                    <span th:if="${match.status == 'DRAFT'}" class="status status-draft">
+
+                        DRAFT
+
+                    </span>
+
+
+                    <span th:if="${match.status == 'PUBLISHED'}" class="status status-published">
+
+                        PUBLISHED
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="actions">
+
+
+                <!-- EDIT -->
+
+                <a th:href="@{'/admin/matches/'
+                        + ${match.id}
+                        + '/edit'}" class="action-btn edit-btn">
+
+                    Edit
+
+                </a>
+
+
+                <!-- PUBLISH -->
+
+                <form th:if="${match.status == 'DRAFT'}" th:action="@{'/admin/matches/'
+                        + ${match.id}
+                        + '/publish'}" method="post" style="display:inline;">
+
+                    <button type="submit" class="action-btn publish-btn">
+
+                        Publish
+
+                    </button>
+
+                </form>
+
+
+                <!-- REGISTRATIONS -->
+
+                <a th:if="${match.status == 'PUBLISHED'}" th:href="@{'/admin/matches/'
+                        + ${match.id}
+                        + '/registrations'}" class="action-btn registration-btn">
+
+                    Registrations
+
+                </a>
+
+
+                <!-- DELETE -->
+
+                <form th:action="@{'/admin/matches/'
+                        + ${match.id}
+                        + '/delete'}" method="post" style="display:inline;" onsubmit="return confirm(
+                        'Are you sure you want to delete this match?'
+                      );">
+
+                    <button type="submit" class="action-btn delete-btn">
+
+                        Delete
+
+                    </button>
+
+                </form>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- BACK TO DASHBOARD -->
+
+        <a href="/dashboard" class="back-btn">
+
+            ← Back to Dashboard
+
+        </a>
+
+
+    </div>
+
+</body>
+
+</html>
