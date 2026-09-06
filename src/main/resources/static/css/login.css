@@ -23,115 +23,368 @@ body {
     position: relative;
 }
 
-/* Dark overlay so login card is clearly visible */
+/* Dark cinematic overlay */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.35);
+
+    background:
+        linear-gradient(135deg,
+            rgba(2, 6, 23, 0.78),
+            rgba(15, 23, 42, 0.58),
+            rgba(30, 27, 75, 0.68));
+
     z-index: 0;
 }
 
+
+/* Login/Register container */
 .login-container {
     width: 100%;
     padding: 20px;
+
     position: relative;
     z-index: 1;
 }
 
+
+/* Main glass card */
 .login-card {
     width: 100%;
     max-width: 400px;
     margin: auto;
 
-    padding: 30px;
+    padding: 32px;
 
-    /* Slight transparency */
-    background: rgba(30, 41, 59, 0.90);
+    /* Premium glass background */
+    background:
+        linear-gradient(145deg,
+            rgba(15, 23, 42, 0.94),
+            rgba(30, 41, 59, 0.88));
 
-    border-radius: 16px;
+    border-radius: 20px;
 
     /* Glass effect */
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+    /* Subtle gaming border */
+    border: 1px solid rgba(56, 189, 248, 0.28);
+
+    /* Premium shadow */
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.65),
+        0 0 35px rgba(14, 165, 233, 0.08);
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+
+/* Small desktop hover effect */
+.login-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 30px 70px rgba(0, 0, 0, 0.7),
+        0 0 40px rgba(56, 189, 248, 0.12);
+}
+
+
+/* Heading */
 h1 {
     text-align: center;
+
+    margin-top: 0;
     margin-bottom: 8px;
+
+    font-size: 30px;
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
 }
 
+
+/* Subtitle */
 .subtitle {
     text-align: center;
+
     color: #94a3b8;
+
+    margin-top: 0;
     margin-bottom: 25px;
+
+    font-size: 14px;
 }
 
+
+/* Labels */
 label {
     display: block;
+
     margin-top: 15px;
-    margin-bottom: 6px;
+    margin-bottom: 7px;
+
+    color: #e2e8f0;
+
+    font-size: 14px;
+    font-weight: 600;
 }
 
+
+/* Input fields */
 input {
     width: 100%;
-    padding: 13px;
 
-    border: 1px solid #475569;
-    border-radius: 8px;
+    padding: 13px 14px;
 
-    background: rgba(15, 23, 42, 0.9);
-    color: white;
+    border: 1px solid rgba(71, 85, 105, 0.9);
+    border-radius: 10px;
+
+    background: rgba(2, 6, 23, 0.78);
+
+    color: #ffffff;
 
     outline: none;
+
+    font-size: 15px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
 
+
+/* Input focus */
 input:focus {
     border-color: #38bdf8;
+
+    background: rgba(2, 6, 23, 0.92);
+
+    box-shadow:
+        0 0 0 3px rgba(56, 189, 248, 0.10),
+        0 0 15px rgba(56, 189, 248, 0.08);
 }
 
-button,
+
+/* Login / Create Account button */
+form>button {
+    display: block;
+
+    width: 100%;
+
+    margin-top: 22px;
+
+    padding: 13px;
+
+    border: none;
+    border-radius: 10px;
+
+    background:
+        linear-gradient(135deg,
+            #f59e0b,
+            #f97316);
+
+    color: #111827;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(249, 115, 22, 0.20);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+
+/* Button hover */
+form>button:hover {
+    filter: brightness(1.08);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(249, 115, 22, 0.30);
+}
+
+
+/* Button click */
+form>button:active {
+    transform: translateY(0);
+}
+
+
+/* Google button if used */
 .google-btn {
     display: block;
+
     width: 100%;
 
     margin-top: 20px;
+
     padding: 13px;
 
-    border: 0;
-    border-radius: 8px;
+    border: none;
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #111827;
 
     text-align: center;
     text-decoration: none;
 
     font-weight: bold;
+
     cursor: pointer;
 }
 
-button {
-    background: #f59e0b;
-    color: #111827;
-}
 
-.google-btn {
-    background: white;
-    color: #111827;
-}
-
+/* Divider */
 .divider {
     text-align: center;
+
     margin: 22px 0;
-    color: #94a3b8;
+
+    color: #64748b;
+
+    font-size: 13px;
 }
 
+
+/* Register text */
 .register {
     text-align: center;
-    margin-top: 20px;
+
+    margin-top: 22px;
+
     color: #94a3b8;
+
+    font-size: 14px;
 }
 
+
+/* Register/Login link */
 .register a {
     color: #38bdf8;
+
     text-decoration: none;
+
+    font-weight: 600;
+
+    transition: color 0.2s ease;
+}
+
+
+.register a:hover {
+    color: #7dd3fc;
+}
+
+
+/* Password field */
+.password-wrapper {
+    position: relative;
+
+    width: 100%;
+}
+
+
+/* Password input */
+.password-wrapper input {
+    width: 100%;
+
+    padding-right: 52px;
+}
+
+
+/* Eye button */
+.password-toggle {
+    position: absolute;
+
+    right: 8px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 38px;
+    height: 38px;
+
+    margin: 0;
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: #94a3b8;
+
+    cursor: pointer;
+
+    font-size: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+/* Eye hover */
+.password-toggle:hover {
+    background: rgba(56, 189, 248, 0.08);
+
+    color: #38bdf8;
+}
+
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+
+    body {
+        background-position: center;
+        background-attachment: scroll;
+    }
+
+    .login-container {
+        padding: 15px;
+    }
+
+    .login-card {
+        max-width: 100%;
+
+        padding: 26px 20px;
+
+        border-radius: 18px;
+    }
+
+    h1 {
+        font-size: 27px;
+    }
+
+    .subtitle {
+        margin-bottom: 22px;
+    }
+
+    input {
+        padding: 13px;
+    }
+
+    .password-wrapper input {
+        padding-right: 50px;
+    }
+
+    form>button {
+        padding: 13px;
+    }
 }

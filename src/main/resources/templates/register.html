@@ -25,7 +25,15 @@
                 <input id="email" name="email" type="email" autocomplete="email" required maxlength="255">
 
                 <label for="password">Password</label>
-                <input id="password" name="password" type="password" autocomplete="new-password" required minlength="8">
+
+                <div class="password-wrapper">
+                    <input id="password" name="password" type="password" autocomplete="new-password" required
+                        minlength="8">
+
+                    <button type="button" class="password-toggle" onclick="togglePassword()" aria-label="Show password">
+                        👁
+                    </button>
+                </div>
 
                 <button type="submit">
                     Create Account
@@ -41,6 +49,23 @@
         </section>
 
     </main>
+
+    <script>
+        function togglePassword() {
+            const password = document.getElementById("password");
+            const toggle = document.querySelector(".password-toggle");
+
+            if (password.type === "password") {
+                password.type = "text";
+                toggle.textContent = "🙈";
+                toggle.setAttribute("aria-label", "Hide password");
+            } else {
+                password.type = "password";
+                toggle.textContent = "👁";
+                toggle.setAttribute("aria-label", "Show password");
+            }
+        }
+    </script>
 
 </body>
 
