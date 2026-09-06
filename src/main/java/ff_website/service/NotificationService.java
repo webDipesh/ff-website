@@ -12,14 +12,16 @@ import ff_website.repository.NotificationRepository;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final PushNotificationService pushNotificationService;
 
     public NotificationService(
-            NotificationRepository notificationRepository) {
+            NotificationRepository notificationRepository,
+            PushNotificationService pushNotificationService) {
 
         this.notificationRepository = notificationRepository;
+        this.pushNotificationService = pushNotificationService;
     }
 
-    // Existing notifications without match ID
     public void createNotification(
             User user,
             String message) {
@@ -27,11 +29,14 @@ public class NotificationService {
         createNotification(user, message, null);
     }
 
-    // Notification with match ID
     public void createNotification(
             User user,
             String message,
             Long matchId) {
+
+        // =========================
+        // SAVE WEBSITE NOTIFICATION
+        // =========================
 
         Notification notification =
                 new Notification();
@@ -42,6 +47,27 @@ public class NotificationService {
         notification.setReadStatus(false);
 
         notificationRepository.save(notification);
+
+
+        // =========================
+        // SEND MOBILE PUSH
+        // =========================
+
+        try {
+
+            pushNotificationService
+                    .sendToUser(user, message);
+
+        } catch (Exception e) {
+
+            // Push fail भए पनि website notification
+            // भने successfully save भइसकेको हुन्छ।
+
+            System.err.println(
+                    "Mobile push notification failed: "
+                    + e.getMessage()
+            );
+        }
     }
 
     public List<Notification> getUserNotifications(
